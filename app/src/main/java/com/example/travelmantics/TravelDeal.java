@@ -12,6 +12,7 @@ class TravelDeal {
         this.title = title;
         this.price = price;
         this.imageUrl = imageUrl;
+
     }
 
     public String getId() {
