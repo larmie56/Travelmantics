@@ -7,14 +7,14 @@
     tools:context=".MainActivity">
 
     <EditText
-        android:id="@+id/editText_travel_deal_name"
+        android:id="@+id/editText_travel_deal_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:inputType="textPersonName"
-        android:hint="@string/travel_deal_name"
+        android:hint="@string/travel_deal_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,7 +30,7 @@
         android:hint="@string/travel_deal_price"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_travel_deal_name" />
+        app:layout_constraintTop_toBottomOf="@+id/editText_travel_deal_title" />
 
     <EditText
         android:id="@+id/editText_travel_deal_description"
