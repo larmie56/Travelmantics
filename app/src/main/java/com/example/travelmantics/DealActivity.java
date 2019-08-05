@@ -1,6 +1,8 @@
 package com.example.travelmantics;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,13 +13,14 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class MainActivity extends AppCompatActivity {
+public class DealActivity extends AppCompatActivity {
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mDatabaseReference;
     private EditText mDealTitle;
     private EditText mDealPrice;
     private EditText mDealDescription;
+    TravelDeal deal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,17 @@ public class MainActivity extends AppCompatActivity {
         mDealPrice = findViewById(R.id.editText_travel_deal_price);
         mDealDescription = findViewById(R.id.editText_travel_deal_description);
 
+        Intent intent = getIntent();
+        TravelDeal deal = (TravelDeal) intent.getSerializableExtra("Deal");
+        if (deal == null) {
+            deal = new TravelDeal();
+        }
+
+        this.deal = deal;
+
+        mDealTitle.setText(deal.getTitle());
+        mDealDescription.setText(deal.getDescription());
+        mDealPrice.setText(deal.getPrice());
 
     }
 
@@ -48,8 +62,13 @@ public class MainActivity extends AppCompatActivity {
                 saveDeal();
                 Toast.makeText(this, "Deal saved!", Toast.LENGTH_LONG).show();
                 clean();
+                backToList();
                 return true;
-
+            case R.id.menu_delete_travel_deal:
+                deleteDeal();
+                Toast.makeText(this, "Deal deleted", Toast.LENGTH_LONG).show();
+                backToList();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
 
@@ -63,12 +82,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveDeal() {
-        String title = mDealTitle.getText().toString();
-        String price = mDealPrice.getText().toString();
+        deal.setTitle(mDealTitle.getText().toString());
+        deal.setDescription(mDealDescription.getText().toString());
+        deal.setPrice(mDealPrice.getText().toString());
         String imageUrl = "";
 
-        TravelDeal deal = new TravelDeal(title, price, imageUrl);
+        if (deal.getId() == null) {
+            mDatabaseReference.push().setValue(deal);
+        }
 
-        mDatabaseReference.push().setValue(deal);
+        else {
+            mDatabaseReference.child(deal.getId()).setValue(deal);
+        }
     }
+
+    private void deleteDeal() {
+        if (deal == null) {
+            Toast.makeText(this, "Deal does not exist", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        mDatabaseReference.child(deal.getId()).removeValue();
+    }
+
+    private void backToList() {
+        Intent intent = new Intent(this, ListActivity.class);
+        startActivity(intent);
+    }
+
 }

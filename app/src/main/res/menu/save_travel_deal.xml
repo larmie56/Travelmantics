@@ -4,6 +4,10 @@
 
     <item
         android:id="@+id/menu_save_travel_deal"
-        android:title="Save"
+        android:title="Save deal"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_delete_travel_deal"
+        android:title="Delete deal"
+        app:showAsAction="never" />
 </menu>
