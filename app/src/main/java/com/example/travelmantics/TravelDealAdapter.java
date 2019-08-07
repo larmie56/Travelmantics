@@ -27,7 +27,6 @@ public class TravelDealAdapter extends RecyclerView.Adapter<TravelDealAdapter.Tr
     private ChildEventListener mChildEventListener;
 
     public TravelDealAdapter() {
-        FirebaseUtil.openFbReference("travelDeals");
         mFirebaseDatabase = FirebaseUtil.mFirebaseDatabase;
         mDatabaseReference = FirebaseUtil.mDatabaseReference;
         deals = FirebaseUtil.mDeals;

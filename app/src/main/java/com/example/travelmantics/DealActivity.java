@@ -52,6 +52,17 @@ public class DealActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.save_travel_deal, menu);
+        if (FirebaseUtil.isAdmin) {
+            menu.findItem(R.id.menu_save_travel_deal).setVisible(true);
+            menu.findItem(R.id.menu_delete_travel_deal).setVisible(true);
+            enableText(true);
+        }
+        else {
+            menu.findItem(R.id.menu_save_travel_deal).setVisible(false);
+            menu.findItem(R.id.menu_delete_travel_deal).setVisible(false);
+            enableText(false);
+        }
+
         return true;
     }
 
@@ -107,7 +118,14 @@ public class DealActivity extends AppCompatActivity {
 
     private void backToList() {
         Intent intent = new Intent(this, ListActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        finish();
     }
 
+    private void enableText(boolean isEnabled) {
+        mDealTitle.setEnabled(isEnabled);
+        mDealDescription.setEnabled(isEnabled);
+        mDealPrice.setEnabled(isEnabled);
+    }
 }
