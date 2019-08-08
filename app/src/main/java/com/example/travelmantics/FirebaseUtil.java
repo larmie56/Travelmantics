@@ -1,6 +1,5 @@
 package com.example.travelmantics;
 
-import android.app.Activity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -14,6 +13,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +25,8 @@ public class FirebaseUtil {
     private static final int RC_SIGN_IN = 123;
     public static FirebaseDatabase mFirebaseDatabase;
     public static DatabaseReference mDatabaseReference;
+    public static FirebaseStorage mFirebaseStorage;
+    public static StorageReference mStorageReference;
     private static FirebaseUtil mFirebaseUtil;
     public static FirebaseAuth mFirebaseAuth;
     public static FirebaseAuth.AuthStateListener mFirebaseAuthListener;
@@ -53,6 +56,7 @@ public class FirebaseUtil {
                     Toast.makeText(caller.getBaseContext(), "Welcome back!", Toast.LENGTH_LONG).show();
                 }
             };
+            connectStorage();
         }
         mDeals = new ArrayList<>();
         mDatabaseReference = mFirebaseDatabase.getReference().child(ref);
@@ -116,4 +120,8 @@ public class FirebaseUtil {
                 RC_SIGN_IN);
     }
 
+    public static void connectStorage() {
+        mFirebaseStorage = FirebaseStorage.getInstance();
+        mStorageReference = mFirebaseStorage.getReference().child("deals_pictures");
+    }
 }
