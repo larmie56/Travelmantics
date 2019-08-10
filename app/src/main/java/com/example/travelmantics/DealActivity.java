@@ -51,6 +51,8 @@ public class DealActivity extends AppCompatActivity {
         mDealDescription = findViewById(R.id.editText_travel_deal_description);
         mImageView = findViewById(R.id.image);
 
+        //Get the intent that started this activity from the listActivity. If the deal is null,
+        // a new deal is being created, else, a deal was selected from the ListActivity.
         Intent intent = getIntent();
         TravelDeal deal = (TravelDeal) intent.getSerializableExtra("Deal");
         if (deal == null) {
@@ -59,11 +61,13 @@ public class DealActivity extends AppCompatActivity {
 
         this.deal = deal;
 
+        //Setup the TextViews and ImageView based on the state of the deal object.
         mDealTitle.setText(deal.getTitle());
         mDealDescription.setText(deal.getDescription());
         mDealPrice.setText(deal.getPrice());
         showImage(deal.getImageUrl());
 
+        //Intent to get a picture from the device
         Button imageButton = findViewById(R.id.button_image);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +86,7 @@ public class DealActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //add the image received from the intent to Firebase storage and display in the ImageView.
         if (requestCode == PICTURE_RESULT && resultCode == RESULT_OK) {
             Uri imageUri = data.getData();
             final StorageReference ref = FirebaseUtil.mStorageReference.child(imageUri.getLastPathSegment());
@@ -108,6 +113,9 @@ public class DealActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.save_travel_deal, menu);
+
+        //Set visibility of the OptionsMenu, TextViews and ImageView based on
+        // authorization of the authenticated user
         if (FirebaseUtil.isAdmin) {
             menu.findItem(R.id.menu_save_travel_deal).setVisible(true);
             menu.findItem(R.id.menu_delete_travel_deal).setVisible(true);
@@ -165,10 +173,12 @@ public class DealActivity extends AppCompatActivity {
     }
 
     private void deleteDeal() {
+
         if (deal == null) {
             Toast.makeText(this, "Deal does not exist", Toast.LENGTH_LONG).show();
             return;
         }
+        //Delete a deal from the Firebase database and storage.
         mDatabaseReference.child(deal.getId()).removeValue();
         Log.d("Image name", deal.getImageName());
         if (deal.getImageName() != null && deal.getImageName().isEmpty() == false) {
@@ -188,6 +198,7 @@ public class DealActivity extends AppCompatActivity {
     }
 
     private void backToList() {
+        //leave the DealActivity to the ListActivity
         Intent intent = new Intent(this, ListActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

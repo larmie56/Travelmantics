@@ -24,7 +24,10 @@ public class ListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+        //Open a reference to the Firebase reference,as set up in the FirebaseUtil class
         FirebaseUtil.openFbReference("travelDeals", this);
+
+        //Setup the RecyclerView with the adapter and LayoutManager
         RecyclerView recyclerView = findViewById(R.id.recycler_view_deals);
         final TravelDealAdapter travelDealAdapter = new TravelDealAdapter();
         recyclerView.setAdapter(travelDealAdapter);
@@ -35,12 +38,14 @@ public class ListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //Attach authentication state listener
         FirebaseUtil.attachListener();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        //Detach authentication state listener
         FirebaseUtil.detachListener();
     }
 
@@ -49,6 +54,8 @@ public class ListActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.list_activity_menu, menu);
 
+        //Setup create_deal OptionsMenu and set visibility of create_deal based on
+        // authorization of the authenticated user
         MenuItem createDeal = menu.findItem(R.id.create_deal);
         if (FirebaseUtil.isAdmin == true) {
             createDeal.setVisible(true);

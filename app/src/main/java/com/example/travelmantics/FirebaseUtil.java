@@ -38,6 +38,7 @@ public class FirebaseUtil {
     private FirebaseUtil() {}
 
     public static void openFbReference(String ref, final ListActivity callerActivity) {
+        //Open a reference to the Firebase database
         if (mFirebaseUtil == null) {
             mFirebaseUtil = new FirebaseUtil();
             mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -63,6 +64,7 @@ public class FirebaseUtil {
     }
 
     public static void checkAdmin(String uid) {
+        //set the authorization level of the admin.
         FirebaseUtil.isAdmin = false;
         DatabaseReference ref = mFirebaseDatabase.getReference().child("administrators")
                 .child(uid);
@@ -94,14 +96,17 @@ public class FirebaseUtil {
 
             }
         };
+        //add child event listener to the reference to the Firebase storage for the admin.
         ref.addChildEventListener(listener);
     }
 
     public static void attachListener() {
+        //add authentication state listener to the Firebase database authentication object.
         mFirebaseAuth.addAuthStateListener(mFirebaseAuthListener);
     }
 
     public static void detachListener() {
+        //remove authentication state listener from the Firebase database authentication object.
         mFirebaseAuth.removeAuthStateListener(mFirebaseAuthListener);
     }
 
@@ -115,12 +120,14 @@ public class FirebaseUtil {
         caller.startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
+                        .setLogo(R.drawable.icons8_traveler_48)
                         .setAvailableProviders(providers)
                         .build(),
                 RC_SIGN_IN);
     }
 
     public static void connectStorage() {
+        //connect to the Firebase storage.
         mFirebaseStorage = FirebaseStorage.getInstance();
         mStorageReference = mFirebaseStorage.getReference().child("deals_pictures");
     }

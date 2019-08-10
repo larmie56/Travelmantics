@@ -8,4 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppBackground" parent="AppTheme">
+        <item name="android:background">@drawable/icons8_traveler_48</item>
+    </style>
+
 </resources>
